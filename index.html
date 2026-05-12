@@ -5,444 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>도쿄 신혼여행 일정표</title>
   <style>
-    :root {
-      --bg: #fff7ed;
-      --card: rgba(255,255,255,.9);
-      --ink: #2b2118;
-      --muted: #7c6f64;
-      --accent: #d97706;
-      --line: rgba(120, 80, 40, .18);
-      --shadow: 0 18px 45px rgba(88, 54, 18, .12);
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;background:#f5f1ea;color:#1f2937;line-height:1.6}
+    .hero{min-height:360px;color:white;text-align:center;display:flex;align-items:center;justify-content:center;padding:48px 18px 92px;background:
+      radial-gradient(circle at 20% 25%,rgba(255,255,255,.35) 0 70px,transparent 72px),
+      radial-gradient(circle at 80% 20%,rgba(255,255,255,.22) 0 90px,transparent 92px),
+      linear-gradient(135deg,#f97316 0%,#fbbf24 38%,#334155 72%,#0f172a 100%)}
+    .hero h1{font-size:clamp(34px,7vw,62px);margin:0;letter-spacing:-.06em}
+    .hero p{margin:14px 0 0;font-size:17px;opacity:.95}
+    .tag{display:inline-block;background:rgba(255,255,255,.22);padding:7px 14px;border-radius:999px;margin-bottom:14px}
+    .wrap{max-width:1120px;margin:-58px auto 0;padding:0 14px 50px;position:relative;z-index:2}
+    .panel,.day{background:rgba(255,255,255,.96);border-radius:26px;box-shadow:0 18px 45px rgba(15,23,42,.12);margin-bottom:20px;overflow:hidden}
+    .panel{padding:20px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    button,.fileBtn,select{border:0;border-radius:14px;padding:11px 14px;font-size:14px}
+    button,.fileBtn{background:#111827;color:white;cursor:pointer;display:inline-flex;justify-content:center;align-items:center}
+    button:hover,.fileBtn:hover{background:#374151}
+    .gray{background:#e5e7eb;color:#111827}.gray:hover{background:#d1d5db}
+    .red{background:#fee2e2;color:#991b1b}.red:hover{background:#fecaca}
+    select{border:1px solid #e2e8f0;background:white;color:#1f2937}
+    input,textarea{width:100%;border:1px solid #e2e8f0;border-radius:14px;padding:11px 12px;font:inherit;background:white;color:#1f2937}
+    textarea{min-height:110px;resize:vertical}
+    input:focus,textarea:focus,select:focus{outline:2px solid #fed7aa;border-color:#fb923c}
+    input[type=file]{display:none}
+    .dayCover{height:210px;color:white;display:flex;align-items:flex-end;padding:20px;background-size:cover;background-position:center;position:relative}
+    .dayCover:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.6))}
+    .dayCoverInner{position:relative;z-index:1;width:100%}
+    .badge{display:inline-block;background:rgba(255,255,255,.25);padding:7px 12px;border-radius:999px;font-weight:800;margin-bottom:8px}
+    .titleInput{background:transparent;border:0;color:white;font-size:28px;font-weight:900;padding:0;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .titleInput:focus{outline:none}
+    .body{padding:20px}
+    .dateRow{display:grid;grid-template-columns:180px 1fr;gap:12px;margin-bottom:14px}
+    .catGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .cat{background:#fff7ed;border:1px solid #fed7aa;border-radius:20px;padding:14px}
+    .catHead{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .catTitle{font-weight:900;color:#7c2d12}
+    .photoGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    .photo{background:white;border:1px solid #fed7aa;border-radius:16px;overflow:hidden}
+    .photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+    .photo button{width:calc(100% - 12px);margin:6px}
+    .emptyPhoto{margin-top:12px;min-height:90px;border:1px dashed #fdba74;border-radius:16px;background:white;color:#64748b;text-align:center;display:flex;align-items:center;justify-content:center;padding:12px;font-size:14px}
+    .actions,.addBox{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .addBox{background:#fffaf5;border:1px dashed #f97316;border-radius:18px;padding:12px;margin:14px 0 4px}
+    .limousine{border-top:1px dashed #fdba74;margin-top:18px;padding-top:16px}
+    .checkItem{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:10px;margin-bottom:8px}
+    .checkItem input[type=checkbox]{width:20px;height:20px;accent-color:#d97706}
+    .done input[type=text]{text-decoration:line-through;color:#94a3b8}
+    .small{font-size:14px;color:#64748b;margin:4px 0 0}
+    @media(max-width:760px){
+      .hero{min-height:320px}.topbar{align-items:stretch}.dateRow,.catGrid,.photoGrid{grid-template-columns:1fr}
+      button,.fileBtn,select{width:100%}.body,.panel{padding:16px}.dayCover{height:185px}.titleInput{font-size:23px}
+      .catHead{flex-direction:column;align-items:stretch}.checkItem{grid-template-columns:auto 1fr}.checkItem button{grid-column:1/-1}
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
-      color: var(--ink);
-      background:
-        linear-gradient(rgba(255,247,237,.86), rgba(255,247,237,.92)),
-        var(--bg-image, none) center/cover fixed no-repeat,
-        var(--bg);
-    }
-    header {
-      padding: 34px 18px 20px;
-      text-align: center;
-    }
-    header h1 { margin: 0 0 8px; font-size: clamp(28px, 7vw, 44px); letter-spacing: -.04em; }
-    header p { margin: 0; color: var(--muted); line-height: 1.55; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px 60px; }
-    .toolbar {
-      position: sticky; top: 0; z-index: 10;
-      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-      padding: 12px; margin: 0 auto 18px;
-      background: rgba(255,247,237,.86); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-    }
-    button, .file-label {
-      border: 1px solid var(--line);
-      background: white;
-      color: var(--ink);
-      border-radius: 999px;
-      padding: 10px 13px;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 5px 14px rgba(0,0,0,.05);
-    }
-    button.primary { background: var(--accent); color: white; border-color: var(--accent); }
-    button.danger { color: #b42318; }
-    input[type="file"] { display:none; }
-    .notice {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 14px 16px;
-      margin: 0 0 18px;
-      box-shadow: var(--shadow);
-      color: var(--muted);
-      line-height: 1.65;
-      font-size: 14px;
-    }
-    .grid { display: grid; gap: 16px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .card-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      padding: 16px 18px;
-      background: rgba(255,255,255,.72);
-      border-bottom: 1px solid var(--line);
-    }
-    .day-title {
-      font-size: 21px; font-weight: 800; outline: none;
-      min-width: 0; flex: 1;
-    }
-    .card-body { padding: 16px; display: grid; gap: 12px; }
-    .section {
-      border: 1px dashed var(--line);
-      border-radius: 20px;
-      padding: 12px;
-      background: rgba(255,255,255,.68);
-    }
-    .section-title {
-      font-weight: 800;
-      margin-bottom: 8px;
-      outline: none;
-      color: #7c3d00;
-    }
-    .editable {
-      min-height: 52px;
-      outline: none;
-      line-height: 1.65;
-      white-space: pre-wrap;
-    }
-    .editable:empty:before, .section-title:empty:before, .day-title:empty:before {
-      content: attr(data-placeholder);
-      color: #b9a99a;
-    }
-    .photos {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px,1fr));
-      gap: 10px;
-    }
-    .photo {
-      position: relative;
-      aspect-ratio: 4/3;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #f4ede6;
-      border: 1px solid var(--line);
-    }
-    .photo img { width:100%; height:100%; object-fit:cover; display:block; }
-    .photo button {
-      position:absolute; right:6px; top:6px;
-      padding:4px 7px; font-size:12px;
-      background: rgba(255,255,255,.9);
-    }
-    .small-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .checklist .item {
-      display:grid;
-      grid-template-columns: auto 1fr auto;
-      gap:10px;
-      align-items:center;
-      padding:9px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .checklist .item:last-child { border-bottom:0; }
-    .checklist span { outline:none; }
-    .done { text-decoration: line-through; color: var(--muted); }
-    dialog {
-      border: 0; border-radius: 22px; max-width: 680px; width: calc(100% - 24px);
-      padding: 0; box-shadow: 0 24px 70px rgba(0,0,0,.25);
-    }
-    dialog .modal { padding: 18px; }
-    textarea {
-      width:100%; min-height:130px; border:1px solid var(--line); border-radius:16px; padding:12px;
-      font-family: inherit; font-size:14px;
-    }
-    .sharebox {
-      word-break: break-all;
-      background: #fff7ed;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px;
-      line-height: 1.55;
-      font-size: 13px;
-    }
-    footer { color: var(--muted); text-align:center; padding:30px 10px; font-size:13px; }
-    @media print {
-      .toolbar, .no-print, dialog { display:none !important; }
-      body { background:white; }
-      .card { break-inside: avoid; box-shadow:none; }
-    }
+    @media print{button,.fileBtn,.addBox,.red,.gray{display:none}.wrap{margin:0}.panel,.day{box-shadow:none;border:1px solid #e5e7eb}.dayCover{height:130px}}
   </style>
 </head>
 <body>
-  <header>
-    <h1 contenteditable="true" id="mainTitle">도쿄 신혼여행 일정표</h1>
-    <p contenteditable="true" id="subtitle">DAY1~DAY6 · 카테고리/사진 자유 편집 · 자동 저장 · 공유 링크 생성</p>
-  </header>
-
-  <div class="toolbar no-print">
-    <button class="primary" onclick="makeShareLink()">공유 링크 만들기</button>
-    <button onclick="copyCurrentUrl()">현재 링크 복사</button>
-    <button onclick="exportJson()">백업 파일 저장</button>
-    <label class="file-label">백업 불러오기<input type="file" accept="application/json" onchange="importJson(event)"></label>
-    <label class="file-label">배경사진 변경<input type="file" accept="image/*" onchange="setBackground(event)"></label>
-    <button onclick="window.print()">PDF 저장 / 인쇄</button>
-    <button class="danger" onclick="resetAll()">초기화</button>
-  </div>
+  <section class="hero">
+    <div>
+      <div class="tag">Tokyo Honeymoon Planner</div>
+      <h1>도쿄 신혼여행 일정표</h1>
+      <p>DAY1~DAY6 · 카테고리/사진 자유 편집 · 자동 저장</p>
+    </div>
+  </section>
 
   <main class="wrap">
-    <div class="notice">
-      <b>사용법:</b> 노트북에서 수정 후 <b>공유 링크 만들기</b>를 누르세요. 만들어진 링크를 휴대폰이나 친구에게 보내면 편집본이 그대로 열립니다.
-      <br>※ 휴대폰에서 또 수정했다면, 휴대폰에서도 다시 “공유 링크 만들기”를 눌러 새 링크를 보내면 됩니다.
-    </div>
-
-    <section class="card checklist no-print">
-      <div class="card-head">
-        <div class="day-title">여행 준비 체크리스트</div>
-        <button onclick="addCheck()">+ 체크리스트 추가</button>
+    <section class="panel topbar">
+      <div>
+        <strong>여행 준비 대시보드</strong>
+        <p class="small">내용, 카테고리, 사진은 이 브라우저에 자동 저장됩니다.</p>
       </div>
-      <div class="card-body" id="checklist"></div>
+      <div class="actions">
+        <button onclick="window.print()">PDF 저장 / 인쇄</button>
+        <button class="gray" onclick="resetAll()">초기화</button>
+      </div>
     </section>
 
-    <div class="small-row no-print" style="margin:16px 0;">
-      <button class="primary" onclick="addDay()">+ 날짜 추가</button>
-    </div>
+    <section class="panel">
+      <div class="topbar">
+        <div>
+          <h2>🧳 여행 체크리스트</h2>
+          <p class="small">추가, 수정, 삭제, 완료 체크 가능</p>
+        </div>
+        <button onclick="addChecklist()">+ 체크리스트 추가</button>
+      </div>
+      <div id="checklist"></div>
+    </section>
 
-    <section class="grid" id="days"></section>
+    <div id="days"></div>
   </main>
 
-  <footer>Tokyo Honeymoon Planner · 저장은 내 브라우저에 자동 저장되고, 공유 링크 생성 시 다른 기기에서도 볼 수 있습니다.</footer>
+<script>
+const bg = [
+  "radial-gradient(circle at 20% 20%,rgba(255,255,255,.32) 0 70px,transparent 72px),linear-gradient(135deg,#fb923c,#facc15 44%,#0f172a)",
+  "radial-gradient(circle at 80% 20%,rgba(255,255,255,.28) 0 80px,transparent 82px),linear-gradient(135deg,#f97316,#fbbf24 46%,#1e293b)",
+  "radial-gradient(circle at 25% 75%,rgba(255,255,255,.24) 0 80px,transparent 82px),linear-gradient(135deg,#ef4444,#fb923c 48%,#111827)",
+  "radial-gradient(circle at 75% 70%,rgba(255,255,255,.28) 0 80px,transparent 82px),linear-gradient(135deg,#f59e0b,#fde68a 46%,#334155)",
+  "radial-gradient(circle at 22% 20%,rgba(255,255,255,.30) 0 75px,transparent 77px),linear-gradient(135deg,#0ea5e9,#fef3c7 48%,#92400e)",
+  "radial-gradient(circle at 80% 30%,rgba(255,255,255,.28) 0 75px,transparent 77px),linear-gradient(135deg,#475569,#f59e0b 48%,#111827)"
+];
 
-  <dialog id="shareDialog">
-    <div class="modal">
-      <h3>공유 링크가 만들어졌어요</h3>
-      <p style="color:var(--muted);line-height:1.6;">아래 링크를 휴대폰 카톡/메모장/친구에게 보내세요. 사진을 많이 넣으면 링크가 길어질 수 있어요.</p>
-      <div class="sharebox" id="shareUrl"></div>
-      <div class="small-row" style="margin-top:14px;">
-        <button class="primary" onclick="copyShareUrl()">링크 복사</button>
-        <button onclick="document.getElementById('shareDialog').close()">닫기</button>
+const options = ["📷 추천 일정","🍱 중식 식당/음식 메모","🍽️ 저녁 식당/음식 메모","🏨 숙소 메모","✏️ 개인 메모","🚌 공항리무진 시간표","🧭 공항리무진 경로","➕ 새 카테고리"];
+
+function cat(title,text){return {id:Date.now()+Math.random(),title,text,photos:[]}}
+
+const defaults = [
+  {label:"DAY 1",date:"2026.06.02 화",title:"도쿄 도착 · 시부야 감성 산책",area:"공항 → 공항리무진 → 도쿄 시내",categories:[
+    cat("📷 추천 일정","공항 도착 → 공항리무진 탑승 → 숙소 체크인 → 시부야 스카이 또는 오모테산도 산책"),
+    cat("🍱 중식 식당/음식 메모","공항 도착 시간에 따라 간단한 쌀밥 정식 또는 스시 후보"),
+    cat("🍽️ 저녁 식당/음식 메모","스시, 야키니쿠, 샤브샤브, 쌀밥 정식 위주로 후보 찾기"),
+    cat("🏨 숙소 메모","도쿄 시내 숙소 / 체크인 시간 확인"),
+    cat("✏️ 개인 메모","첫날은 이동 피로가 있으니 무리하지 않고 동선을 짧게 잡기")
+  ],limousine:[
+    cat("🚌 공항리무진 시간표","탑승 터미널, 승차장 번호, 출발 시간, 도착 예정 시간을 적어두세요."),
+    cat("🧭 공항리무진 타러 가는 경로","입국장 → 버스 티켓 카운터 → 승차장 위치 → 대기 장소 순서로 메모하세요.")
+  ]},
+  {label:"DAY 2",date:"2026.06.03 수",title:"아사쿠사 · 우에노 · 긴자",area:"전통 거리와 야경 코스",categories:[cat("📷 추천 일정","아사쿠사 센소지 → 스미다강 산책 → 우에노 공원/박물관 → 긴자 야경"),cat("🍱 중식 식당/음식 메모","스시, 장어덮밥, 정식류 후보"),cat("🍽️ 저녁 식당/음식 메모","긴자 근처 스시 또는 야키니쿠 후보"),cat("🏨 숙소 메모","동일 숙소"),cat("✏️ 개인 메모","사진 포인트와 휴식 시간 넣기")]},
+  {label:"DAY 3",date:"2026.06.04 목",title:"신주쿠 · 하라주쿠 · 롯폰기",area:"도심 산책과 전망대",categories:[cat("📷 추천 일정","메이지신궁 → 하라주쿠/캣스트리트 → 신주쿠 교엔 → 롯폰기 전망대 또는 도쿄타워"),cat("🍱 중식 식당/음식 메모","하라주쿠/신주쿠 근처 정식류 후보"),cat("🍽️ 저녁 식당/음식 메모","샤브샤브, 스키야키, 야키토리 후보"),cat("🏨 숙소 메모","동일 숙소"),cat("✏️ 개인 메모","야경 코스 추천")]},
+  {label:"DAY 4",date:"2026.06.05 금",title:"다이칸야마 · 나카메구로 · 에비스",area:"감성 카페와 기념 저녁식사",categories:[cat("📷 추천 일정","다이칸야마 츠타야 → 나카메구로 카페거리 → 에비스 가든플레이스"),cat("🍱 중식 식당/음식 메모","가벼운 점심 후보"),cat("🍽️ 저녁 식당/음식 메모","스시 오마카세, 철판구이, 코스요리 후보"),cat("🏨 숙소 메모","도쿄 마지막 숙박"),cat("✏️ 개인 메모","도쿄에서 둘만 보내는 마지막 밤")]},
+  {label:"DAY 5",date:"2026.06.06 토",title:"도쿄에서 고텐바로 이동",area:"도쿄 → 고텐바",categories:[cat("📷 추천 일정","체크아웃 → 친구 픽업 → 고텐바 이동 → 신부 지인 만남"),cat("🍱 중식 식당/음식 메모","이동 동선에 맞춘 점심 후보"),cat("🍽️ 저녁 식당/음식 메모","고텐바 야키니쿠, 스시, 정식류"),cat("🏨 숙소 메모","고텐바 숙소 후보"),cat("✏️ 개인 메모","픽업 시간 기준으로 체크아웃 조율")]},
+  {label:"DAY 6",date:"2026.06.07 일",title:"타우라교회 예배 · 이동 준비",area:"타우라교회 · 요코하마/도쿄/공항",categories:[cat("📷 추천 일정","아침 이동 → 타우라교회 예배 → 점심 → 다음 일정 또는 귀국 준비"),cat("🍱 중식 식당/음식 메모","예배 후 근처 정식, 스시, 고기류"),cat("🍽️ 저녁 식당/음식 메모","필요 시 공항/도쿄 근처 저녁 후보"),cat("🏨 숙소 메모","필요 시 공항 근처 숙소"),cat("✏️ 개인 메모","교회 이동시간과 짐 보관 확인")]}
+];
+
+const defaultChecklist = ["여권 확인","항공권 / 예약번호 저장","숙소 예약 확인","공항리무진 시간표 캡처 첨부","공항리무진 승차장 경로 사진 첨부","해외 결제 카드 / 현금 / 환전 준비","유심 또는 eSIM 준비","충전기 / 보조배터리 / 돼지코","식당 후보 확인","여행자 보험 확인"].map(text=>({text,done:false}));
+
+let days = JSON.parse(localStorage.getItem("tokyoTripDays_v2")) || defaults;
+let checklist = JSON.parse(localStorage.getItem("tokyoTripChecklist_v2")) || defaultChecklist;
+
+function save(){localStorage.setItem("tokyoTripDays_v2",JSON.stringify(days))}
+function saveCheck(){localStorage.setItem("tokyoTripChecklist_v2",JSON.stringify(checklist))}
+function esc(s){return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")}
+function attr(s){return esc(s).replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+
+function render(){
+  document.getElementById("days").innerHTML = days.map((d,i)=>`
+    <section class="day">
+      <div class="dayCover" style="background:${bg[i]}">
+        <div class="dayCoverInner">
+          <div class="badge">${esc(d.label)}</div>
+          <input class="titleInput" value="${attr(d.title)}" oninput="days[${i}].title=this.value;save()">
+        </div>
+      </div>
+      <div class="body">
+        <div class="dateRow">
+          <input value="${attr(d.date)}" oninput="days[${i}].date=this.value;save()" placeholder="날짜">
+          <input value="${attr(d.area)}" oninput="days[${i}].area=this.value;save()" placeholder="지역/이동">
+        </div>
+        ${groupHTML(i,"categories",d.categories)}
+        ${i===0?`<div class="limousine"><h2>🚌 DAY 1 공항리무진 정보</h2>${groupHTML(i,"limousine",d.limousine||[])}</div>`:""}
+      </div>
+    </section>
+  `).join("");
+}
+
+function groupHTML(dayIndex, group, cats){
+  const selectId = `sel-${dayIndex}-${group}`;
+  return `
+    <div class="catGrid">${cats.map((c,ci)=>catHTML(dayIndex,group,c,ci)).join("")}</div>
+    <div class="addBox">
+      <select id="${selectId}">${options.map(o=>`<option value="${attr(o)}">${esc(o)}</option>`).join("")}</select>
+      <button onclick="addCat(${dayIndex},'${group}','${selectId}')">+ 카테고리 추가</button>
+    </div>
+  `;
+}
+
+function catHTML(dayIndex, group, c, ci){
+  const fileId = `file-${dayIndex}-${group}-${ci}`;
+  const photos = c.photos || [];
+  return `
+    <div class="cat">
+      <div class="catHead">
+        <input class="catTitle" value="${attr(c.title)}" oninput="days[${dayIndex}]['${group}'][${ci}].title=this.value;save()">
+        <button class="red" onclick="deleteCat(${dayIndex},'${group}',${ci})">카테고리 삭제</button>
+      </div>
+      <textarea oninput="days[${dayIndex}]['${group}'][${ci}].text=this.value;save()">${esc(c.text)}</textarea>
+      ${photos.length?`<div class="photoGrid">${photos.map((p,pi)=>`<div class="photo"><img src="${p}"><button class="red" onclick="deletePhoto(${dayIndex},'${group}',${ci},${pi})">사진 삭제</button></div>`).join("")}</div>`:`<div class="emptyPhoto">사진이 필요하면 아래 버튼으로 추가하세요.<br>필요 없으면 비워두면 됩니다.</div>`}
+      <div class="actions">
+        <label class="fileBtn" for="${fileId}">사진 추가</label>
+        <input id="${fileId}" type="file" accept="image/*" multiple onchange="addPhotos(${dayIndex},'${group}',${ci},this)">
       </div>
     </div>
-  </dialog>
+  `;
+}
 
-  <script>
-    const KEY = "tokyo_honeymoon_shared_v2";
-
-    const defaultData = {
-      title: "도쿄 신혼여행 일정표",
-      subtitle: "DAY1~DAY6 · 카테고리/사진 자유 편집 · 자동 저장 · 공유 링크 생성",
-      bg: "",
-      checklist: [
-        { text: "여권 / 항공권 / 숙소 예약 확인", done: false },
-        { text: "WILLER 버스 예약 확인", done: false },
-        { text: "하코네 온천/료칸 예약 확인", done: false }
-      ],
-      days: [
-        { title: "DAY 1 · 현대 도쿄", sections: [
-          { title: "오전", body: "숙소 → 메지로역 → 하라주쿠역\n메이지신궁 산책 후 오모테산도 이동" },
-          { title: "점심/카페", body: "bills Omotesando / Aoyama Flower Market Tea House / AFURI Harajuku 중 선택" },
-          { title: "오후", body: "오모테산도 산책 → 시부야 이동 → 시부야 스크램블 구경" },
-          { title: "선택 야경", body: "시부야 스카이 sunset~야경 시간대 추천\n이후 JR 야마노테선으로 메지로역 복귀" }
-        ], photos: []},
-        { title: "DAY 2 · 전통 도쿄", sections: [
-          { title: "오전", body: "메지로역 → 우에노 환승 → 아사쿠사역\n센소지 / 나카미세 거리 천천히 구경" },
-          { title: "점심", body: "Daikokuya Tempura / Asakusa Imahan / Unatoto Asakusa 중 선택" },
-          { title: "오후", body: "말차/화과자 카페에서 휴식 → 스카이트리 또는 소라마치" },
-          { title: "선택 야경", body: "센소지 야간 조명 재방문 추천" }
-        ], photos: []},
-        { title: "DAY 3 · 하코네 온천 힐링", sections: [
-          { title: "오전", body: "메지로역 → 신주쿠역 → 오다큐 로망스카 → 하코네유모토" },
-          { title: "오후", body: "료칸 체크인 / 온천 / 근처 산책" },
-          { title: "저녁", body: "료칸 가이세키 식사 후 온천으로 마무리" }
-        ], photos: []}
-      ]
+function addCat(dayIndex, group, selectId){
+  const selected = document.getElementById(selectId).value;
+  const title = selected === "➕ 새 카테고리" ? "새 카테고리" : selected;
+  if(!days[dayIndex][group]) days[dayIndex][group]=[];
+  days[dayIndex][group].push(cat(title,""));
+  save(); render();
+}
+function deleteCat(dayIndex, group, ci){
+  if(!confirm("이 카테고리와 안의 사진을 삭제할까요?")) return;
+  days[dayIndex][group].splice(ci,1); save(); render();
+}
+function addPhotos(dayIndex, group, ci, input){
+  const files = Array.from(input.files||[]);
+  let loaded = 0;
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e => {
+      if(!days[dayIndex][group][ci].photos) days[dayIndex][group][ci].photos=[];
+      days[dayIndex][group][ci].photos.push(e.target.result);
+      loaded++;
+      if(loaded===files.length){save();render();}
     };
+    reader.readAsDataURL(file);
+  });
+}
+function deletePhoto(dayIndex, group, ci, pi){
+  days[dayIndex][group][ci].photos.splice(pi,1); save(); render();
+}
 
-    let data = load();
+function renderChecklist(){
+  document.getElementById("checklist").innerHTML = checklist.map((c,i)=>`
+    <div class="checkItem ${c.done?'done':''}">
+      <input type="checkbox" ${c.done?'checked':''} onchange="checklist[${i}].done=this.checked;saveCheck();renderChecklist()">
+      <input value="${attr(c.text)}" oninput="checklist[${i}].text=this.value;saveCheck()">
+      <button class="red" onclick="checklist.splice(${i},1);saveCheck();renderChecklist()">삭제</button>
+    </div>
+  `).join("");
+}
+function addChecklist(){checklist.push({text:"새 체크 항목",done:false});saveCheck();renderChecklist()}
+function resetAll(){
+  if(!confirm("저장된 수정 내용과 사진을 모두 초기화할까요?")) return;
+  localStorage.removeItem("tokyoTripDays_v2");
+  localStorage.removeItem("tokyoTripChecklist_v2");
+  location.reload();
+}
 
-    function encodeUnicode(str) {
-      return btoa(unescape(encodeURIComponent(str)));
-    }
-    function decodeUnicode(str) {
-      return decodeURIComponent(escape(atob(str)));
-    }
-
-    function load() {
-      try {
-        const hash = location.hash.startsWith("#data=") ? location.hash.slice(6) : "";
-        if (hash) {
-          const parsed = JSON.parse(decodeUnicode(hash));
-          localStorage.setItem(KEY, JSON.stringify(parsed));
-          history.replaceState(null, "", location.pathname);
-          return parsed;
-        }
-      } catch(e) { alert("공유 링크 데이터를 불러오지 못했어요. 백업 파일을 사용해주세요."); }
-
-      try {
-        const saved = localStorage.getItem(KEY);
-        return saved ? JSON.parse(saved) : structuredClone(defaultData);
-      } catch(e) {
-        return structuredClone(defaultData);
-      }
-    }
-
-    function save() {
-      data.title = document.getElementById("mainTitle").innerText.trim() || defaultData.title;
-      data.subtitle = document.getElementById("subtitle").innerText.trim() || defaultData.subtitle;
-      localStorage.setItem(KEY, JSON.stringify(data));
-    }
-
-    function render() {
-      document.getElementById("mainTitle").innerText = data.title;
-      document.getElementById("subtitle").innerText = data.subtitle;
-      if (data.bg) document.documentElement.style.setProperty("--bg-image", `url(${data.bg})`);
-      else document.documentElement.style.removeProperty("--bg-image");
-
-      const checklist = document.getElementById("checklist");
-      checklist.innerHTML = "";
-      data.checklist.forEach((item, i) => {
-        const row = document.createElement("div");
-        row.className = "item";
-        row.innerHTML = `
-          <input type="checkbox" ${item.done ? "checked" : ""} onchange="toggleCheck(${i}, this.checked)">
-          <span contenteditable="true" oninput="editCheck(${i}, this.innerText)" class="${item.done ? "done" : ""}">${escapeHtml(item.text)}</span>
-          <button class="danger" onclick="delCheck(${i})">삭제</button>
-        `;
-        checklist.appendChild(row);
-      });
-
-      const days = document.getElementById("days");
-      days.innerHTML = "";
-      data.days.forEach((day, dayIndex) => {
-        const card = document.createElement("article");
-        card.className = "card";
-        card.innerHTML = `
-          <div class="card-head">
-            <div class="day-title" contenteditable="true" data-placeholder="날짜 제목" oninput="editDayTitle(${dayIndex}, this.innerText)">${escapeHtml(day.title)}</div>
-            <button class="danger no-print" onclick="delDay(${dayIndex})">날짜 삭제</button>
-          </div>
-          <div class="card-body">
-            <div class="small-row no-print">
-              <button onclick="addSection(${dayIndex})">+ 카테고리 추가</button>
-              <label class="file-label">사진 추가<input type="file" accept="image/*" multiple onchange="addPhotos(event, ${dayIndex})"></label>
-            </div>
-            <div id="sections-${dayIndex}"></div>
-            <div class="photos" id="photos-${dayIndex}"></div>
-          </div>
-        `;
-        days.appendChild(card);
-
-        const secWrap = card.querySelector(`#sections-${dayIndex}`);
-        day.sections.forEach((sec, secIndex) => {
-          const div = document.createElement("div");
-          div.className = "section";
-          div.innerHTML = `
-            <div class="small-row no-print" style="justify-content:flex-end">
-              <button class="danger" onclick="delSection(${dayIndex}, ${secIndex})">카테고리 삭제</button>
-            </div>
-            <div class="section-title" contenteditable="true" data-placeholder="카테고리 제목" oninput="editSectionTitle(${dayIndex}, ${secIndex}, this.innerText)">${escapeHtml(sec.title)}</div>
-            <div class="editable" contenteditable="true" data-placeholder="내용을 입력하세요" oninput="editSectionBody(${dayIndex}, ${secIndex}, this.innerText)">${escapeHtml(sec.body)}</div>
-          `;
-          secWrap.appendChild(div);
-        });
-
-        const photoWrap = card.querySelector(`#photos-${dayIndex}`);
-        day.photos.forEach((src, photoIndex) => {
-          const div = document.createElement("div");
-          div.className = "photo";
-          div.innerHTML = `<img src="${src}" alt=""><button class="danger no-print" onclick="delPhoto(${dayIndex}, ${photoIndex})">×</button>`;
-          photoWrap.appendChild(div);
-        });
-      });
-
-      save();
-    }
-
-    function escapeHtml(str) {
-      return String(str ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-    }
-
-    function editDayTitle(i, v){ data.days[i].title = v; save(); }
-    function editSectionTitle(d,s,v){ data.days[d].sections[s].title = v; save(); }
-    function editSectionBody(d,s,v){ data.days[d].sections[s].body = v; save(); }
-    function addSection(d){ data.days[d].sections.push({title:"새 카테고리", body:""}); render(); }
-    function delSection(d,s){ if(confirm("이 카테고리를 삭제할까요?")) { data.days[d].sections.splice(s,1); render(); } }
-    function addDay(){ data.days.push({title:`DAY ${data.days.length+1}`, sections:[{title:"오전", body:""},{title:"오후", body:""},{title:"식사/카페", body:""}], photos:[]}); render(); }
-    function delDay(i){ if(confirm("이 날짜를 삭제할까요?")) { data.days.splice(i,1); render(); } }
-
-    function addCheck(){ data.checklist.push({text:"새 체크리스트", done:false}); render(); }
-    function editCheck(i,v){ data.checklist[i].text = v; save(); }
-    function toggleCheck(i,v){ data.checklist[i].done = v; render(); }
-    function delCheck(i){ data.checklist.splice(i,1); render(); }
-
-    function addPhotos(event, dayIndex) {
-      const files = [...event.target.files];
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = e => {
-          data.days[dayIndex].photos.push(e.target.result);
-          render();
-        };
-        reader.readAsDataURL(file);
-      });
-      event.target.value = "";
-    }
-    function delPhoto(d,p){ data.days[d].photos.splice(p,1); render(); }
-
-    function setBackground(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        data.bg = e.target.result;
-        render();
-      };
-      reader.readAsDataURL(file);
-      event.target.value = "";
-    }
-
-    function makeShareLink() {
-      save();
-      const encoded = encodeUnicode(JSON.stringify(data));
-      const url = location.origin + location.pathname + "#data=" + encoded;
-      document.getElementById("shareUrl").textContent = url;
-      document.getElementById("shareDialog").showModal();
-    }
-
-    async function copyShareUrl() {
-      await navigator.clipboard.writeText(document.getElementById("shareUrl").textContent);
-      alert("공유 링크를 복사했어요.");
-    }
-
-    async function copyCurrentUrl() {
-      await navigator.clipboard.writeText(location.href);
-      alert("현재 링크를 복사했어요.");
-    }
-
-    function exportJson() {
-      save();
-      const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "tokyo-honeymoon-planner-backup.json";
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    function importJson(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        try {
-          data = JSON.parse(e.target.result);
-          localStorage.setItem(KEY, JSON.stringify(data));
-          render();
-          alert("백업을 불러왔어요.");
-        } catch(err) {
-          alert("파일을 불러오지 못했어요.");
-        }
-      };
-      reader.readAsText(file);
-      event.target.value = "";
-    }
-
-    function resetAll() {
-      if (!confirm("모든 내용을 초기화할까요?")) return;
-      data = structuredClone(defaultData);
-      localStorage.setItem(KEY, JSON.stringify(data));
-      render();
-    }
-
-    document.getElementById("mainTitle").addEventListener("input", save);
-    document.getElementById("subtitle").addEventListener("input", save);
-    render();
-  </script>
+renderChecklist();
+render();
+</script>
 </body>
 </html>
